@@ -6,6 +6,7 @@ def get_menu_keyboard():
     keyboard = InlineKeyboardBuilder()
     keyboard.button(text="статистика", callback_data="stats")
     keyboard.button(text="Выбор игры", callback_data="game_selection")
+    keyboard.button(text="Назад в меню", callback_data="back_to_menu")
     return keyboard.as_markup()
 
 
