@@ -70,7 +70,7 @@ HANGMANPICS = [
 ]
 
 
-async def hangman_game_start(difficulty: str, user_id: int):
+async def hangman_game_start(difficulty: str, user_id: int) -> str:
     word = await get_random_word(difficulty)
     opened_letters = list("_" * len(word))
     session_info = {"word": word, "attempt": 0, "opened_letters": opened_letters}  # type: ignore
@@ -81,7 +81,7 @@ async def hangman_game_start(difficulty: str, user_id: int):
     return "".join(opened_letters)
 
 
-async def get_random_word(difficulty: str):
+async def get_random_word(difficulty: str) -> str:  # type: ignore
     async with AsyncSessionLocal() as session:
         if difficulty == "easy":
             result = await session.execute(
@@ -106,7 +106,7 @@ async def get_random_word(difficulty: str):
             return choice(result.scalars().all())
 
 
-async def game_hangman_gameplay(user_id: int, message: str):
+async def game_hangman_gameplay(user_id: int, message: str) -> tuple[str, str, str]:
     game_session = await get_game_session(user_id=user_id, game_type="hangman")
     word, attempt, opened_letters = game_session.values()
     message = message.lower()

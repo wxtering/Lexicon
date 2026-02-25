@@ -3,7 +3,7 @@ from database.session import AsyncSessionLocal
 from sqlalchemy import select, func, case
 
 
-async def get_user_stats(user_id: int, game_type: str):
+async def get_user_stats(user_id: int, game_type: str) -> tuple[int, int, int]:
     async with AsyncSessionLocal() as session:
         stmt = (
             select(GameHistory.user_id, func.count(GameHistory.game_result))
@@ -16,16 +16,16 @@ async def get_user_stats(user_id: int, game_type: str):
         try:
             total_games = result[0][1] + result[1][1]
             wins = result[1][1]
-            winrate = wins / total_games * 100
+            winrate = int(wins / total_games * 100)
             return total_games, wins, winrate
         except IndexError:
             total_games = result[0][1]
             wins = result[0][1]
-            winrate = wins / total_games * 100
+            winrate = int(wins / total_games * 100)
             return total_games, wins, winrate
 
 
-async def get_leaderboard_stats(game_type: str):
+async def get_leaderboard_stats(game_type: str) -> list[tuple[str, int, int]]:
     async with AsyncSessionLocal() as session:
         wins = func.sum(case((GameHistory.game_result.is_(True), 1), else_=0)).label(
             "wins"

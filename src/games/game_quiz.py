@@ -17,7 +17,7 @@ async def get_random_question():
         return question.word, question.definition
 
 
-async def start_quiz(chat_id: int):
+async def start_quiz(chat_id: int) -> tuple[str, str]:
     word, definition = await get_random_question()
     await clear_game_session(chat_id=chat_id, game_type="quiz")
     await add_game_session(
@@ -33,7 +33,9 @@ async def start_quiz(chat_id: int):
     return word, definition
 
 
-async def check_answer(answer: str, chat_id: int, user_id: int):
+async def check_answer(
+    answer: str, chat_id: int, user_id: int
+) -> tuple[str, str] | str:
     game_session = await get_game_session(chat_id=chat_id, game_type="quiz")
     word = game_session["word"]
     print(word, answer, game_session["attempts"])
@@ -67,7 +69,7 @@ async def check_answer(answer: str, chat_id: int, user_id: int):
             return "Continue"
 
 
-async def get_hint(chat_id: int):
+async def get_hint(chat_id: int) -> str:
     game_session = await get_game_session(chat_id=chat_id, game_type="quiz")
     hint = game_session["hint"]
     word = game_session["word"]
