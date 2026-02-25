@@ -7,6 +7,7 @@ def build_stats_keyboard():
     keyboard = InlineKeyboardBuilder()
     keyboard.button(text="🔍 Моя Статистика", callback_data="user_stats")
     keyboard.button(text="🔍 Таблица лидеров", callback_data="leaderboard")
+    keyboard.button(text="Назад в меню", callback_data="back_to_menu")
     return keyboard.as_markup()
 
 
